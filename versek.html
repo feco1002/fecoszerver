@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Fecó | Versek & Kéziratok</title>
+    <meta name="description" content="Fecó hivatalos szervere - Tetoválások, versek és kéziratok egy helyen.">
+<meta name="keywords" content="feco_szerver, feco, tetoválás galéria, versek, kéziratok, MFG">
+<meta name="author" content="MFG">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #1a1a1a url('https://images.unsplash.com/photo-1517646331032-9e8563c520a1?q=80&w=1500');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Special Elite', cursive;
+            padding: 40px;
+        }
+
+        /* BANNER VISSZA GOMB */
+        .back-banner-container {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1100;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .blade-icon {
+            width: 60px;
+            height: auto;
+            filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));
+            transform: rotate(-45deg);
+            transition: 0.4s ease-in-out;
+        }
+
+        .banner-text {
+            background: #900;
+            color: #eee;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 8px 25px;
+            margin-left: -15px;
+            clip-path: polygon(10% 0, 100% 0, 90% 50%, 100% 100%, 10% 100%, 0% 50%);
+            border-top: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
+            letter-spacing: 2px;
+        }
+
+        .back-banner-container:hover .blade-icon { transform: rotate(0deg) scale(1.2); filter: drop-shadow(0 0 15px #f00); }
+        .back-banner-container:hover .banner-text { background: #f00; color: #fff; transform: translateX(10px); }
+
+        /* Versek rácsa */
+        .verses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 120px auto 60px;
+        }
+
+        .verse-thumbnail {
+            background: #fdf6e3 url('https://www.transparenttextures.com/patterns/old-map.png');
+            padding: 30px;
+            height: 380px;
+            cursor: pointer;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
+            border: 1px solid #dcd1b3;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .verse-thumbnail:hover {
+            transform: translateY(-8px);
+            border-color: #900;
+        }
+
+        .verse-thumbnail h3 {
+            font-family: 'Cinzel', serif;
+            color: #111;
+            border-bottom: 2px solid #900;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .verse-thumbnail p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #444;
+            font-style: italic;
+            overflow: hidden;
+        }
+
+        .read-more {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.75rem;
+            color: #900;
+            font-weight: bold;
+        }
+
+        /* MODAL (Nagyított nézet) */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .expanded-paper {
+            background: #fdf6e3 url('https://www.transparenttextures.com/patterns/old-map.png');
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            padding: 60px;
+            border-left: 12px solid #900;
+            box-shadow: 0 0 60px #000;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 25px;
+            font-size: 3.5rem;
+            cursor: pointer;
+            color: #900;
+            line-height: 1;
+        }
+
+        .full-poem-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #111;
+            white-space: pre-line;
+            padding-bottom: 30px;
+        }
+
+        /* Görgetősáv stílus */
+        .expanded-paper::-webkit-scrollbar { width: 8px; }
+        .expanded-paper::-webkit-scrollbar-thumb { background: #900; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <a href="feco_szerver.html" class="back-banner-container">
+        <img src="—Pngtree—rose icon design template_6261877.png" class="blade-icon" alt="Penge">
+        <span class="banner-text">VISSZA</span>
+    </a>
+
+    <div class="verses-grid">
+        
+        <div class="verse-thumbnail" onclick="openVerse('VÁRAKOZÁS', poem1)">
+            <h3>VÁRAKOZÁS</h3>
+            <p>Vártam már sokat az életemben,<br>néha sokat is, de rádöbbentem,<br>hogy várni gyengeség, fájdalmas.<br>Olyan mélyre ható csalódás...</p>
+            <div class="read-more">OLVASÁS...</div>
+        </div>
+
+        <div class="verse-thumbnail" onclick="openVerse('NEM SZÖRNYEK VAGYUNK', poem2)">
+            <h3>NEM SZÖRNYEK VAGYUNK</h3>
+            <p>Hát igen, itt tartok hogy ezt a verset írom,<br>mielőtt bele kezdenék, csak egy dolgot kérek:<br>Megbecsülést, ne ítéljünk el másokat...</p>
+            <div class="read-more">OLVASÁS...</div>
+        </div>
+
+        <div class="verse-thumbnail" style="opacity: 0.5; border: 2px dashed #888; cursor: default;">
+            <h3>HAMAROSAN...</h3>
+            <p>Újabb versek és gondolatok helye.</p>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="expanded-paper">
+            <span class="close-btn" onclick="closeVerse()">&times;</span>
+            <h2 id="modalTitle" style="font-family:'Cinzel'; margin-bottom:30px; color:#900; text-align:center;"></h2>
+            <div id="modalBody" class="full-poem-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // VERSEK TÁROLÁSA
+        const poem1 = `Vártam már sokat az életemben,
+néha sokat is, de rádöbbentem,
+hogy várni gyengeség, fájdalmas.
+Olyan mélyre ható csalódás.
+
+Vártam, és vártam,
+és csak egyedül álltam,
+de nem jött senki…
+Hát igen…lehet reménykedni.
+
+ÉS mind ez után, vártam..
+Tovább vártam reménykedve álltam,
+persze egyedül, kétségbe esve.
+Azt gondoltam elvagyok késve..
+
+Hogy amire várok, már elment…
+És értelmetlenül csak tovább álltam,
+vártam, vajon mi mást csináltam volna.
+Hitegettem magam, de fölöslegesen…
+
+Nem jött senki, mért is jött volna?
+Azt hiszed az életem ebből állna,
+Hát… jól sejted, mert még várok.
+De belül már fáradok.
+
+Az emberek meg haladtak,
+ők mellettem sétáltak.
+Majd feladtam.. és járni kezdtem,
+elmozdultam és haladtam.
+Haladtam a tömegben,
+arcomon mosoly, de elégedetlen..
+Nem kaptam meg a jutalmam,
+pedig türelmesen vártam.
+
+Nincs jutalmam, senkinek sincs.
+Mondjak valamit? Nincs is kincs,
+ez egy mese, hitegetik a gyereket.
+Aki egyet érdemel, védelmet.
+
+Védelmet a várakozástól,
+hogy megvédjük a csalódástól.
+Saját károdból okulva, 
+mások átkát feloldd segítve.
+
+És okulásaim közbe jártam.
+Haladtam az emberekkel, és megláttam..
+Megláttam őt, a tömegben..
+Állt és várt egyedül, reménytelen..
+
+Elé álltam, majd hozzá szoltam:
+Megjöttem.. – ő volt kire vártam,
+meg fogtam kezét, majd átöleltem.
+Így találtam rá.. talán ez a szerelem.
+
+Szavaim után átölelt, szorosan.
+Majd szemeimbe nézett alaposan:
+Szeretlek.. – majd meg ragadta kezem,
+és szaladni kezdett…velem.
+
+Kéz a kézben a tömegben,
+szaladtunk együtt, közösen.
+Gondjaink tova szálltak,
+és a szavak भी hallgattak.
+
+Elcsendesedet minden,
+nyugalomra leltem, ebben.
+Nem kellet már várnom,
+se egyedül állnom.
+
+Mert már haladtunk, 
+a közös utunkon sétáltunk.
+A megszokott helyünket elhagyva.
+elindultunk a tömeget hátra hagyva.
+
+2025. 12. 09.
+MFG`;
+
+        const poem2 = `„Nem szörnyek vagyunk”
+
+Hát igen, itt tartok hogy ezt a verset írom,
+mielőtt bele kezdenék, csak egy dolgot kérek:
+Megbecsülést, ne ítéljünk el másokat, mert ez nem kerek.
+Ez egy út, amin talán egyedül indultak el, vagy nem…
+
+A legelején csak gyerekeket láttam bennük,
+akik befogadták akiknek hasonló volt a tükrük.
+Így is volt, de nem sokáig, elkezdődött minden tükör repedezni.
+A repedéseket megpróbálták szeretettel tölteni,
+ez ment is így egy darabig, és ezt jó volt látni.
+
+Élveztem, hogy önmagamra leltem, legalább is úgy éreztem,
+a tükör ugyan egybe volt, de a repedések halványok.
+A kitöltött űr melyen sokat dolgoztunk megszűnt, zavarta a társaságom.
+Engem is zavart bevallom, mert elő jöttek régi, rossz és fájdalmas nyomok.
+
+Azok a nyomok melyek ejtették a sebet, nem csak az én lelkembe,
+és ahogy a mondás tartja: ”Egy bolond százat csinál”.
+Ha nem is voltunk százan, elegen voltunk egy maroknyinál.
+Olyan dolgokhoz nyúltunk, ami biztos nyomot hagy a szívünkbe.
+
+Az egézségünk nem fogok kertelni: elbaszodott.
+2 éven át minden nap fogyasztottuk ami hozzánk jutott,
+nem kellet volna, bevallom, sőt tudom, de nem volt más ami a boldogságot pótolná.
+A társaságba egyesek szerint kincsre leltünk, örök öröm, naná.
+
+Elsőre így fogtam fel, élveztem nem tagadás, és annyira elvakított minket a vágy,
+hogy nem láttuk a tükörben a hibát, és az érzés amit nyújtott, egy szó: lágy.
+Mintha magunk világában éltünk volna, ahol az létezett amit akartunk,
+boldogtalanságnak akaratból helyet nem hagytunk.
+
+Itt még nem sejtettük milyen hátrányok és végzetes dolgok lesznek,
+elvakított az öröm, vágy és a boldogság melyet adott mind ez a szemünknek.
+A látvány mi tárult elénk nem volt végtelen, nem minden tart örökké,
+ezért ismétlődött meg minden nap az egész, ezzel váltak ezek a dolgok nekünk értékké.
+
+Olyan kincsnek számított hogy ha fegyverrel kényszerítettek volna, akkor is meg tartjuk,
+mert kialakult az aminek nem kellet volna, és ezt sosem bocsátjuk.
+Hiába tudtuk hogy árt, mégis csináltuk, én meg sorba álltam, sokszor az elejére.
+Kezeim rángatóztak ha én álltam volna félre.
+
+Mikor fejembe volt már minden, akkor éreztem az örömöt, amit sose.
+De sajnos ez az érzés nem volt örök, mert a hatás nem volt egy hosszú mese,
+melynek vége a mai napig nyúlik el, talán meglesz olyan hosszú mint egy mise.
+Mindig utáltak, lenéztek és rossz szavakkal ítéltek, és nem csak ez alkotta ezt e versem.
+
+Két év után, de nehezen kell bevallanom, és kijelentenem, de függő lettem.
+Nem csak az ő hibájuk hanem az enyém is, de én mégis inkább a sajátomat kerestem,
+tudom hogy jutottam ide, és azt is mért, de nem látom ennek sajnosa végét,
+„Gödörbe esni könnyű, de kijutni nehezebb” de sose leltem értelmét.
+
+És míg barátaimmal a gödör mélyén voltunk, reményt és esélyt láttunk.
+Az esély ami idáig vezetett, és most ennél a nehéz pontnál tartottunk,
+nem láttunk mást esélyt, a könnyebb utat választottuk de nem volt helyes, ezt mind tudtuk.
+Mikor rádöbbentem mi is folyik, ott hagytam a hervadt rózsákat tovább hervadni.
+
+De hiába, mert a kísértés követett, 1 éve talpra álltam…de sajnos segítséggel,
+ahogy ezt olvasod, sejtheted mi volt a segítség meg kiegyenesített.
+És ezek a napok melyek idáig vezetnek, mind mocskosak, és ez a mondat fedett.
+Elfedi a mondandóm de egyesek értik, és értik mit értek az alatt hogy: ”barátság az ellenséggel”.
+
+Ezek a tiltott szerek rontották el életem, melyek függőséget és hiányt okoztak bennem,
+a hiány miatt tovább alkalmaztam ellenségem,
+Aki napról napra rontott, nem csak rajtam, hanem a környezetemen is egyben.
+Megfosztott a barátaimtól, mert ők csak egy drogost avagy egy függőt láttak bennem.
+
+Egy függőt láttak bennem vagy egy szörnyet,
+de kérdem én, mindenki aki boldogságért küzd, az egy szörnyeteg?
+A képet látják csak, és arról beszélnek, de nem látják az igazi értékét,
+torzított valóság a kép, melyet szokásuk szerint úgy tartanak: beteg.
+
+Nem látszik, de mi nyújtjuk kezünket, segítséget remélve, de csak a kést a hátunkba kapjuk cserébe.
+Vagy sose akarnak igazán meg ismerni bennünket, nem mindig szörny ként kell tekinteni az emberre,
+mert sosem látják az értéket és tartják az becsületbe.
+Nem minden függő, drogos vagy alkoholista rossz ember, csak arra van szüksége amit elvesztett.
+
+Mért lennénk mi szörnyek? Nem ártottunk semmit néktek,
+talán a rossz háttér miatt becsülitek meg így az embert?
+Sose voltunk senki helyébe, és sose leszünk, de ha belegondolnátok milyen egy „szörnynek”.
+Ti csak nézitek, telefont vesztek a kezetekbe, és röhögcséltek.
+
+Szerinted milyen érzés lehet ez egy „szörnynek”?
+Nem minden esetben családi háttér, vagy rossz barátság teremti őket, hanem ti.
+Ti is alkottátok őket, ugyanis mindenki bűnös, és gondolj bele, mi lenne ha te lennél az ő helyébe,
+segítség kéne, amit nem kapsz meg, mert azt hiszik hogy mivel függő vagy akkor „szörnyeteg” is.
+
+De néhány függőnek, elég egy kis szikra, vagy fény…nem csak a javuláshoz hanem a romláshoz is.
+Azt hogy ki melyik szikrát, fényt adja neki az saját döntése,
+De mindenki, sőt bárki lehetünk függő, vagy másnéven „szörnyeteg”
+és olyankor nektek kell a fény, vagy a szikra, de az már rajtad múlik melyik irányba vezet.
+
+Egyeseknek meg adatódik ez a segítség, de én nem tudtam egy kezet se megragadni,
+szikrát gyújtani vagy esetleg fény keresni.
+Nem mertem, és tudtam eddig szavakba önteni mi történik, és mindig félek…
+Félek hogy rossz emberben bízok meg, vagy nem veszik észre üzenetem, pedig segítséget kérek.
+
+Próbáltam nyitni emberek felé, vagy esetleg beszélni róla,
+de az eredmény mindig egy mosoly, vagy röhögés volt.
+És remélem miután ezt felolvastam, legalább egyeseknek lesz bátorsága.
+Felállnak vagy kiállnak és segítséget kérnek, mert igazából ez egy közösség, és a segítség nyújtás másnak életet, vagy reményt ad.
+
+A tetteinknek súlya van, és valakinek segít tovább élni,
+egy kis segítséggel is jót tehetsz és menthetsz életet.
+És ne félj segítséget nyújtani vagy kérni,
+ugyanis lehet megtudsz javítani egy széttört tükröt.
+
+2026.02.17
+MFG`;
+
+        // FUNKCIÓK
+        function openVerse(title, content) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = content;
+            document.getElementById('overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Ne görögjön a háttér
+        }
+
+        function closeVerse() {
+            document.getElementById('overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('overlay')) {
+                closeVerse();
+            }
+        }
+    </script>
+</body>
+</html>

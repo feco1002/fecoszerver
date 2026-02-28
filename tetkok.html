@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Fecó | Tetováló Galéria</title>
+    <meta name="description" content="Fecó hivatalos szervere - Tetoválások, versek és kéziratok egy helyen.">
+<meta name="keywords" content="feco_szerver, feco, tetoválás galéria, versek, kéziratok, MFG">
+<meta name="author" content="MFG">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* Fő háttér: Sötét, elegáns textúra */
+            background: #0a0a0a url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            background-attachment: fixed;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* --- ÚJ: TETOVÁLÓ GÉPES VISSZA GOMB --- */
+        .back-nav-container {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1100;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .tattoo-machine-icon {
+            width: 55px;
+            height: auto;
+            /* Eredeti színeket hagyjuk, csak egy kis aranyos csillogást adunk neki */
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-label {
+            background: rgba(166, 124, 0, 0.9); /* Arany-bronz alap */
+            color: #000;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            padding: 8px 25px;
+            margin-left: -10px;
+            border: 2px solid #d4af37;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .back-nav-container:hover .tattoo-machine-icon {
+            transform: scale(1.15) rotate(-10deg);
+            filter: drop-shadow(0 0 15px #d4af37);
+        }
+
+        .back-nav-container:hover .nav-label {
+            background: #d4af37;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            transform: translateX(5px);
+        }
+
+        /* FEJLÉC */
+        header {
+            text-align: center;
+            padding: 120px 20px 60px;
+        }
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            letter-spacing: 12px;
+            color: #d4af37;
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+        }
+        .subtitle {
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #aaa;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        /* --- ÁTTETSZŐ KÖZPONTI KERET --- */
+        .main-gallery-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(15, 15, 15, 0.7); /* Halvány, áttetsző sötét */
+            backdrop-filter: blur(8px);
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            border-radius: 8px;
+        }
+
+        /* GALÉRIA RÁCS */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .work-item {
+            position: relative;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border: 1px solid #333;
+            cursor: pointer;
+            background: #000;
+        }
+
+        .work-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* MOSTANTÓL ALAPBÓL SZÍNESEK */
+            filter: brightness(0.9);
+            transition: 0.5s ease;
+        }
+
+        .work-item:hover img {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        /* Dekorációs keret a képeknek hoverkor */
+        .work-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 0px solid #d4af37;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        .work-item:hover::after {
+            border: 8px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* LIGHTBOX */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.98);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal img {
+            max-width: 95%;
+            max-height: 90vh;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.4);
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: #d4af37;
+            font-size: 3rem;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="feco_szerver.html" class="back-nav-container">
+        <img src="pngaaa.com-2953308.png" class="tattoo-machine-icon" alt="Tetováló gép">
+        <span class="nav-label">Vissza</span>
+    </a>
+
+    <header>
+        <h1>GALÉRIA</h1>
+        <p class="subtitle">Bőrbe vésett képek</p>
+    </header>
+
+    <div class="main-gallery-wrapper">
+        <div class="gallery-grid">
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="cf572031-c88d-4b78-b08f-d407b2416cda.jpg" alt="Munkám">
+            </div>
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="tetko.jpg" alt="Munkám">
+            </div>
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="6e08c314-995a-422b-a2ff-b5f824d61e4c.jpg" alt="Munkám">
+            </div>
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="7f45fbe8-e28c-4bcd-a9a5-f2c350765a07.jpg" alt="Munkám">
+            </div>
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="7f45fbe8-e28c-4bcd-a9a5-f2c350765a07.jpg" alt="Munkám">
+            </div>
+            <div class="work-item" onclick="openLightbox(this)">
+                <img src="7f45fbe8-e28c-4bcd-a9a5-f2c350765a07.jpg" alt="Munkám">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="lightbox" onclick="this.style.display='none'">
+        <span class="close-modal">&times;</span>
+        <img id="lightbox-img" src="" alt="Nagyított tetoválás">
+    </div>
+
+    <script>
+        function openLightbox(element) {
+            const imgSrc = element.querySelector('img').src;
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('lightbox')) {
+                document.getElementById('lightbox').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
